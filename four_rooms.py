@@ -127,6 +127,34 @@ class FourRooms:
     def _obs(self):
         return np.concatenate([self.s, self.g])
 
+def test():
+    s = np.array([1, 1])
+    g = np.array([2*l+1, 2*l+1])
+    s = env.reset(s, g)
+    done = False
+    traj = [s]
+    while not done:
+        s, _, done, _ = env.step(env.action_space.sample())
+        traj.append(s)
+    traj = np.array(traj)
+
+    def plot_traj(env, ax, traj, goal=None):
+        traj_map = env.map.copy().astype(np.float)
+        traj_map[traj[:, 0], traj[:, 1]] = 2 # visited states
+        traj_map[traj[0, 0], traj[0, 1]] = 1.5 # starting state
+        traj_map[traj[-1, 0], traj[-1, 1]] = 2.5 # ending state
+        if goal is not None:
+            traj_map[goal[0], goal[1]] = 3 # goal
+        ax.imshow(traj_map)
+        ax.set_xlabel('y')
+        ax.set_label('x')
+
+    ax = plt.subplot()
+    plot_traj(env, ax, traj, g)
+    plt.savefig('p2_random_traj.png', 
+            bbox_inches='tight', pad_inches=0.1, dpi=300)
+    plt.show()
+
 # build env
 l, T = 5, 30
 env = FourRooms(l, T)
