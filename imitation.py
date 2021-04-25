@@ -35,7 +35,6 @@ def generate_episode(env, policy):
     rewards = []
     
     while not done:
-        # WRITE CODE HERE
         action = np.argmax(policy(np.expand_dims(state,0)))
         # print("action shape ", action)
         state, reward, done,_ = env.step(action)
@@ -70,11 +69,6 @@ class Imitation():
         self._train_actions = np.array(self._train_actions)
         
     def generate_dagger_data(self):
-        # WRITE CODE HERE
-        # You should collect states and actions from the student policy
-        # (self.model), and then relabel the actions using the expert policy.
-        # This method does not return anything.
-        # END
         self._train_states = []
         self._train_actions = []
         for _ in range(self.num_episodes):
@@ -106,11 +100,7 @@ class Imitation():
                               batch_size = 64)
         
         return hist.history['loss'], hist.history['accuracy']
-            
         
-        # WRITE CODE HERE
-        # END
-
 
     def evaluate(self, policy, n_episodes=50):
         rewards = []

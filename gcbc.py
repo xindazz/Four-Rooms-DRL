@@ -38,16 +38,14 @@ class GCBC:
         self._train_states = []
         self._train_actions = []
         
-        # WRITE CODE HERE
         for _ in range(500):
             states, actions, goal = BFS(self.env)
 
             for i in range(len(states)):
               states[i] = np.concatenate((states[i],np.array(goal)))
-              actions[i] = action_to_one_hot(env,env.act_map[tuple(actions[i].tolist())])
+              actions[i] = action_to_one_hot(self.env,self.env.act_map[tuple(actions[i].tolist())])
             self._train_states.extend(states)
             self._train_actions.extend(actions)
-        # END
 
         self._train_states = np.array(self._train_states).astype(np.float) # size: (*, 4)
         self._train_actions = np.array(self._train_actions) # size: (*, 4)
@@ -57,17 +55,15 @@ class GCBC:
         self._train_states = []
         self._train_actions = []
 
-        # WRITE CODE HERE
-        # END
         for _ in range(500):
           states, actions, goal = BFS(self.env)
           relabel_states = states + [goal]
           for i in range(len(states)-1):
             relabel_idx = np.random.choice(range(i+1, len(states)+1))
             states[i] = np.concatenate((states[i], relabel_states[relabel_idx]))
-            actions[i] = action_to_one_hot(env,env.act_map[tuple(actions[i].tolist())])
+            actions[i] = action_to_one_hot(self.env,self.env.act_map[tuple(actions[i].tolist())])
           states[-1] = np.concatenate((states[-1],np.array(goal)))
-          actions[-1] = action_to_one_hot(env,env.act_map[tuple(actions[-1].tolist())])
+          actions[-1] = action_to_one_hot(self.env,self.env.act_map[tuple(actions[-1].tolist())])
 
           self._train_states.extend(states)
           self._train_actions.extend(actions)
@@ -98,10 +94,10 @@ def evaluate_gc(env, policy, n_episodes=50):
     succs = 0
     for _ in range(n_episodes):
         _,_,_,info = generate_gc_episode(env, policy.model)
-        # WRITE CODE HERE
+
         if info == 'succ':
             succs +=1
-        # END
+
     succs /= n_episodes
     return succs
 
@@ -121,7 +117,6 @@ def generate_gc_episode(env, policy):
     actions = []
     rewards = []
     while not done:
-        # WRITE CODE HERE
         action = np.argmax(policy(np.expand_dims(state,0)))
             # print("action shape ", action)
         state, reward, done, info = env.step(action)
@@ -129,5 +124,5 @@ def generate_gc_episode(env, policy):
             states.append(state)
         actions.append(action_to_one_hot(env,action))
         rewards.append(reward)
-        # END
+
     return states, actions, rewards, info

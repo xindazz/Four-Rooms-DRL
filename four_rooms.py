@@ -106,7 +106,6 @@ class FourRooms:
         # '''
         assert self.action_space.contains(a)
 
-        # WRITE CODE HERE
         # print("curr state",self.s)
         # # print("action ", self.act_set[a])
         done = False
@@ -130,8 +129,6 @@ class FourRooms:
             self.t+=1
             # print("valid")
             self.s = next_state
-
-        # END
 
         return self._obs(), 0.0, done, info
 

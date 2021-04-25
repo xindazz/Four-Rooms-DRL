@@ -6,13 +6,11 @@ import numpy as np
 
 def make_model(input_dim=4, out_dim=2):
     model = Sequential()      
-    # WRITE CODE HERE
     # Add layers to the model:
     # a fully connected layer with 10 units
     # a tanh activation
     # another fully connected layer with out_dim (the number of actions)
     # a softmax activation (so the output is a proper distribution)
-    # END
     model.add(keras.Input(input_dim,))
     model.add(Dense(10, activation='tanh'))
     model.add(Dense(out_dim, activation='softmax'))
